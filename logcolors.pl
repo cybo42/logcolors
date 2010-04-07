@@ -5,16 +5,23 @@ use Term::ANSIColor;
 
 $result = GetOptions ("file=s" => \$filename, # string
                       "colorfile=s" => \$colorFile,
-                      "tail" => \$tail); # flag
+                      "tail" => \$tail,
+                      "stdin" => \$stdin); # flag
 
 my $colorMap = loadColorMap($colorFile);
 
-
-if($tail){
-    open(LOG, "tail -f $filename|") || die "Could not tail $filename: $!\n";
+if($stdin){
+  open(LOG, "<&STDIN") || die "Could not open $filename: $!\n";
 }else{
-    open(LOG, "$filename") || die "Could not open $filename: $!\n";
+
+    if($tail){
+        open(LOG, "tail -f $filename|") || die "Could not tail $filename: $!\n";
+    }else{
+        open(LOG, "$filename") || die "Could not open $filename: $!\n";
+    }
+
 }
+
 
 while($line = <LOG>){
     my $matched = 0;
