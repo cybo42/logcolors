@@ -47,8 +47,11 @@ sub loadColorMap{
 
   }else{
       $colorMap->{'ERROR'} = "red";
-      $colorMap->{'DEBUG'} = "green";
+      $colorMap->{'Error'} = "red";
+      $colorMap->{'DEBUG'} = "cyan";
       $colorMap->{'WARN'} = "yellow";
+      #$colorMap->{'JBoss.*Started'} = "cyan blink";
+      $colorMap->{'JBoss.*Started'} = "green";
   }
 
   return $colorMap;
