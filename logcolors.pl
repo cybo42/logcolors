@@ -10,6 +10,8 @@ $result = GetOptions ("file=s" => \$filename, # string
 
 my $colorMap = loadColorMap($colorFile);
 
+$SIG{INT} = \&resetAndExit;
+
 if($stdin){
   open(LOG, "<&STDIN") || die "Could not open $filename: $!\n";
 }else{
@@ -36,6 +38,11 @@ while($line = <LOG>){
     unless($matched){
       print $line;
     }
+}
+
+sub resetAndExit{
+  print colored("\n", "reset");
+  exit;
 }
 
 sub loadColorMap{
