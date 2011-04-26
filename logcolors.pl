@@ -72,7 +72,7 @@ sub parseColorFile{
     next if /^#/; # Skip lines w/ comments
     chomp();
 
-    my ($color, $regex) = split(/\s?=\s?/, $_, 2);
+    my ($regex, $color) = split(/\s*?=\s*?/, $_, 2);
     $colorMap->{$regex} = $color;
   }
 
