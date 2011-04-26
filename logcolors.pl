@@ -14,6 +14,7 @@ $SIG{INT} = \&resetAndExit;
 
 if($stdin){
   open(LOG, "<&STDIN") || die "Could not open $filename: $!\n";
+
 }else{
 
     if($tail){
@@ -57,8 +58,6 @@ sub loadColorMap{
       $colorMap->{'Error'} = "red";
       $colorMap->{'DEBUG'} = "cyan";
       $colorMap->{'WARN'} = "yellow";
-      #$colorMap->{'JBoss.*Started'} = "cyan blink";
-      $colorMap->{'JBoss.*Started'} = "green";
   }
 
   return $colorMap;
@@ -66,7 +65,19 @@ sub loadColorMap{
 
 sub parseColorFile{
   my $file = shift;
-  return {};
+  open(CLRFILE, $file) || die "Could not open Color file $file: $!";
+  my $colorMap = {};
+
+  while (<CLRFILE>){
+    next if /^#/; # Skip lines w/ comments
+    chomp();
+
+    my ($color, $regex) = split(/\s?=\s?/, $_, 2);
+    $colorMap->{$regex} = $color;
+  }
+
+  close CLRFILE;
+  return $colorMap;
 }
 
 
